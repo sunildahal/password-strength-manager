@@ -1,0 +1,338 @@
+openapi: 3.0.3
+info:
+  title: Password Strength Manager API
+  description: A comprehensive API for password management including strength checking, generation, breach detection, and activity logging.
+  version: 1.0.0
+  contact:
+    name: Sunil Dahal
+    email: sunil@example.com
+servers:
+  - url: http://localhost:5000
+    description: Development server
+
+paths:
+  /:
+    get:
+      summary: Home endpoint
+      description: Check if the API is running
+      responses:
+        '200':
+          description: API is running
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "Password Strength Manager API is running!"
+
+  /auth/login:
+    post:
+      summary: User login
+      description: Authenticate user with username and password
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - username
+                - password
+              properties:
+                username:
+                  type: string
+                  example: "sunil"
+                password:
+                  type: string
+                  example: "mypassword"
+      responses:
+        '200':
+          description: Password OK, proceed to 2FA
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Password OK. Enter 2FA token."
+        '401':
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Invalid username or password"
+
+  /auth/verify-2fa:
+    post:
+      summary: Verify 2FA token
+      description: Complete login with 2FA token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - token
+              properties:
+                token:
+                  type: string
+                  example: "123456"
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Login successful"
+                  role:
+                    type: string
+                    example: "user"
+        '400':
+          description: No login session
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "No login session"
+        '401':
+          description: Invalid 2FA token
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Invalid 2FA token"
+
+  /auth/logout:
+    get:
+      summary: User logout
+      description: Log out the current user
+      responses:
+        '200':
+          description: Logged out successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Logged out"
+
+  /strength/check:
+    post:
+      summary: Check password strength
+      description: Analyze password strength and provide security metrics
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - password
+              properties:
+                password:
+                  type: string
+                  example: "MySecurePassword123!"
+      responses:
+        '200':
+          description: Password analysis results
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  password:
+                    type: string
+                    example: "MySecurePassword123!"
+                  entropy:
+                    type: number
+                    example: 128.5
+                  complexity_score:
+                    type: number
+                    example: 85
+                  patterns:
+                    type: array
+                    items:
+                      type: string
+                    example: ["uppercase", "lowercase", "digits", "symbols"]
+                  dictionary_weak:
+                    type: boolean
+                    example: false
+        '400':
+          description: Password required
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Password is required"
+
+  /generator/create:
+    post:
+      summary: Generate password
+      description: Generate a secure password with customizable options
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                length:
+                  type: integer
+                  minimum: 8
+                  maximum: 128
+                  default: 12
+                  example: 16
+                use_upper:
+                  type: boolean
+                  default: true
+                  example: true
+                use_lower:
+                  type: boolean
+                  default: true
+                  example: true
+                use_digits:
+                  type: boolean
+                  default: true
+                  example: true
+                use_symbols:
+                  type: boolean
+                  default: true
+                  example: true
+      responses:
+        '200':
+          description: Generated password
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  generated_password:
+                    type: string
+                    example: "Ab3$Xy9!Mn2@Lp5"
+                  length:
+                    type: integer
+                    example: 16
+                  options:
+                    type: object
+                    properties:
+                      upper:
+                        type: boolean
+                        example: true
+                      lower:
+                        type: boolean
+                        example: true
+                      digits:
+                        type: boolean
+                        example: true
+                      symbols:
+                        type: boolean
+                        example: true
+        '400':
+          description: No character types selected
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "No character types selected"
+
+  /breach/check:
+    post:
+      summary: Check password breach status
+      description: Check if password has been compromised in known data breaches
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - password
+              properties:
+                password:
+                  type: string
+                  example: "password123"
+      responses:
+        '200':
+          description: Breach check results
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  breached:
+                    type: boolean
+                    example: true
+                  count:
+                    type: integer
+                    example: 1234567
+                  message:
+                    type: string
+                    example: "This password has been found in 1,234,567 breaches"
+        '400':
+          description: Password required
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Password is required"
+
+  /dashboard/logs:
+    get:
+      summary: Get activity logs
+      description: Retrieve all activity logs for monitoring and auditing
+      responses:
+        '200':
+          description: List of activity logs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    user:
+                      type: string
+                      example: "sunil"
+                    action:
+                      type: string
+                      example: "User logged in"
+                    ip:
+                      type: string
+                      example: "127.0.0.1"
+                    timestamp:
+                      type: string
+                      format: date-time
+                      example: "2026-04-25T10:31:05Z"
+
+components:
+  securitySchemes:
+    sessionAuth:
+      type: apiKey
+      in: cookie
+      name: session
+      description: Session-based authentication using Flask session cookies
