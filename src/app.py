@@ -1,13 +1,15 @@
 from flask import Flask
 from auth.routes import auth_bp
 from auth.models import bcrypt
+from strength.routes import strength_bp
 
 app = Flask(__name__)
-app.secret_key = "super-secret-key"  # Replace with secure key
+app.secret_key = "super-secret-key"
 
 bcrypt.init_app(app)
 
 app.register_blueprint(auth_bp, url_prefix="/auth")
+app.register_blueprint(strength_bp, url_prefix="/strength")
 
 @app.route("/")
 def home():
