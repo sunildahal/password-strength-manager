@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Password Generator - Password Strength Manager{% endblock %}
+
+{% block content %}
+<div class="page-card">
+    <div class="page-header">
+        <i class="fas fa-magic"></i>
+        <h2>Password Generator</h2>
+    </div>
+    <div class="page-body">
+        <form id="generator-form">
+            <div class="form-group">
+                <label for="gen-length">Length</label>
+                <input type="number" id="gen-length" name="length" value="16" min="8" max="128" required>
+            </div>
+            <div class="checkbox-group">
+                <label class="checkbox-label">
+                    <input type="checkbox" name="use_upper" checked> Uppercase
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" name="use_lower" checked> Lowercase
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" name="use_digits" checked> Digits
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" name="use_symbols" checked> Symbols
+                </label>
+            </div>
+            <button type="submit" class="btn btn-success">
+                <i class="fas fa-key"></i> Generate Password
+            </button>
+        </form>
+        <div id="generator-result" class="result-container" style="display: none;"></div>
+    </div>
+</div>
+{% endblock %}

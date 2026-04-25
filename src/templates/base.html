@@ -15,6 +15,11 @@
                 Password Manager
             </div>
             <div class="nav-links">
+                <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Dashboard</a>
+                <a href="{{ url_for('strength_page') }}" class="btn btn-secondary">Strength</a>
+                <a href="{{ url_for('generator_page') }}" class="btn btn-secondary">Generator</a>
+                <a href="{{ url_for('breach_page') }}" class="btn btn-secondary">Breach</a>
+                <a href="{{ url_for('logs_page') }}" class="btn btn-secondary">Logs</a>
                 {% if session.user %}
                     <span class="user-info">Welcome, {{ session.user }}</span>
                     <a href="{{ url_for('auth.logout') }}" class="btn btn-secondary">

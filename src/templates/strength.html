@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Password Strength Check - Password Strength Manager{% endblock %}
+
+{% block content %}
+<div class="page-card">
+    <div class="page-header">
+        <i class="fas fa-search"></i>
+        <h2>Password Strength Check</h2>
+    </div>
+    <div class="page-body">
+        <form id="strength-form">
+            <div class="form-group">
+                <label for="strength-password">Password</label>
+                <input type="password" id="strength-password" name="password" placeholder="Enter a password to analyze" required>
+            </div>
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-search"></i> Analyze Password
+            </button>
+        </form>
+        <div id="strength-result" class="result-container" style="display: none;"></div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Activity Logs - Password Strength Manager{% endblock %}
+
+{% block content %}
+<div class="page-card">
+    <div class="page-header">
+        <i class="fas fa-history"></i>
+        <h2>Activity Logs</h2>
+    </div>
+    <div class="page-body">
+        <button id="refresh-logs" class="btn btn-secondary">
+            <i class="fas fa-sync"></i> Refresh Logs
+        </button>
+        <div id="logs-container" class="logs-container">
+            <div class="loading">Loading activity logs...</div>
+        </div>
+    </div>
+</div>
+{% endblock %}

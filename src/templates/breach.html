@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Breach Check - Password Strength Manager{% endblock %}
+
+{% block content %}
+<div class="page-card">
+    <div class="page-header">
+        <i class="fas fa-exclamation-triangle"></i>
+        <h2>Password Breach Check</h2>
+    </div>
+    <div class="page-body">
+        <form id="breach-form">
+            <div class="form-group">
+                <label for="breach-password">Password</label>
+                <input type="password" id="breach-password" name="password" placeholder="Enter a password to check" required>
+            </div>
+            <button type="submit" class="btn btn-warning">
+                <i class="fas fa-search"></i> Check Breach
+            </button>
+        </form>
+        <div id="breach-result" class="result-container" style="display: none;"></div>
+    </div>
+</div>
+{% endblock %}

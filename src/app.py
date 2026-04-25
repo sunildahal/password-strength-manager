@@ -40,6 +40,22 @@ def home():
 def dashboard():
     return render_template("dashboard.html")
 
+@app.route("/strength")
+def strength_page():
+    return render_template("strength.html")
+
+@app.route("/generator")
+def generator_page():
+    return render_template("generator.html")
+
+@app.route("/breach")
+def breach_page():
+    return render_template("breach.html")
+
+@app.route("/logs")
+def logs_page():
+    return render_template("logs.html")
+
 @app.route("/login")
 def login_page():
     return render_template("login.html")
@@ -50,11 +66,6 @@ def auth_status():
         "logged_in": "user" in session,
         "user": session.get("user")
     })
-
-@app.route("/auth/logout")
-def logout():
-    session.clear()
-    return render_template("dashboard.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
