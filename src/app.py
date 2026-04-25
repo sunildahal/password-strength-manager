@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template, session, jsonify
 from auth.routes import auth_bp
 from auth.models import bcrypt
 from strength.routes import strength_bp
@@ -31,11 +31,30 @@ swaggerui_blueprint = get_swaggerui_blueprint(
 )
 app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
 
-
-
+# Frontend Routes
 @app.route("/")
 def home():
-    return "Password Strength Manager API is running!"
+    return render_template("dashboard.html")
+
+@app.route("/dashboard")
+def dashboard():
+    return render_template("dashboard.html")
+
+@app.route("/login")
+def login_page():
+    return render_template("login.html")
+
+@app.route("/auth/status")
+def auth_status():
+    return jsonify({
+        "logged_in": "user" in session,
+        "user": session.get("user")
+    })
+
+@app.route("/auth/logout")
+def logout():
+    session.clear()
+    return render_template("dashboard.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
