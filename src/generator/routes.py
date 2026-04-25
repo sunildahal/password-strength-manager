@@ -1,5 +1,6 @@
 from flask import Blueprint, request, jsonify
 from .generator import generate_password
+from activity_log.logger import log_action
 
 generator_bp = Blueprint("generator", __name__)
 
@@ -18,6 +19,7 @@ def create_password():
     if not password:
         return jsonify({"error": "No character types selected"}), 400
 
+    log_action(user="anonymous", action="Generated a password")
     return jsonify({
         "generated_password": password,
         "length": length,

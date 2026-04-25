@@ -1,3 +1,6 @@
 flask
 flask-bcrypt
 pyotp
+pytest
+bandit
+pip-audit

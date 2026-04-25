@@ -1,5 +1,6 @@
 from flask import Blueprint, request, jsonify
 from .breach import check_pwned
+from activity_log.logger import log_action
 
 breach_bp = Blueprint("breach", __name__)
 
@@ -13,4 +14,5 @@ def breach_check():
 
     result = check_pwned(password)
 
+    log_action(user="anonymous", action="Checked password breach status")
     return jsonify(result)

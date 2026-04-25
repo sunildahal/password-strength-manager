@@ -1,5 +1,6 @@
 from flask import Blueprint, request, session, jsonify
 from .utils import verify_credentials, verify_2fa, get_role
+from activity_log.logger import log_action
 
 auth_bp = Blueprint("auth", __name__)
 
@@ -29,6 +30,7 @@ def verify_2fa_route():
         session["user"] = username
         session["role"] = get_role(username)
         session.pop("pending_user")
+        log_action(user=username, action="User logged in")
         return jsonify({"message": "Login successful", "role": session["role"]})
 
     return jsonify({"error": "Invalid 2FA token"}), 401
